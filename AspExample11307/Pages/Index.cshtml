@@ -1,0 +1,37 @@
+﻿@page
+@model AspExample11307.Pages.Index
+
+@{
+    Layout = "Layouts/_Layout";
+    ViewBag.Title = "Моя доска"; 
+}
+
+<div class="board" id="board">
+    <!-- Здесь будут добавляться заметки -->
+    <div class="toolbar">
+        <button id="addSticker" class="toolbar-button">
+            <img src="images/sticker.svg" alt="Стикер" />
+        </button>
+        <button id="addText" class="toolbar-button">
+            <img src="images/text.svg" alt="Текст" />
+        </button>
+    </div>
+    <div>
+        <p id = "date">@Model.DateTime</p>
+        <button id="dateUpdate"> Ткни меня</button>
+    </div>
+</div>
+<script>
+    document.getElementById('dateUpdate').addEventListener('click', updateDate);
+    
+    async function updateDate(){
+        let result = await fetch("/updateDate", {
+            method: "POST"
+        });
+        let json = await result.json();
+        document.getElementById('date').innerHTML = json["date"];
+    }
+
+</script>
+
+

@@ -1,0 +1,28 @@
+﻿@using System.Text.Json
+@using BlazorAppExample.Models
+
+<h3>Случайная цитата</h3>
+<p>@_quote</p>
+<button @onclick="GetQuote">Новая цитата</button>
+
+@code {
+    private string? _quote = "Нажмите кнопку, чтобы получить цитату.";
+
+    private async Task GetQuote()
+    {
+        using var client = HttpClientFactory.CreateClient("quotes");
+        var result = await client.GetFromJsonAsync<QuotesApiResponse>("/quotes/random/?language_code=ru", 
+            new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower
+            });
+        if (result == null)
+        {
+            throw new ApplicationException("No quotes available");
+        }
+
+        _quote = $"{result.Content} (c.) {result.Originator.Name} ";
+    }
+
+    [Inject] private IHttpClientFactory HttpClientFactory { get; set; } = default!;
+}

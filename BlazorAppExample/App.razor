@@ -1,0 +1,17 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <title>Simple code</title>
+</head>
+<body>
+
+<h1>simple code</h1>
+<Router AppAssembly="@typeof(Program).Assembly">
+    <Found Context="routeData">
+        <RouteView RouteData="@routeData"  />
+    </Found>
+</Router>
+
+<script src="_framework/blazor.web.js"></script>
+</body>
+</html>
