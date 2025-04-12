@@ -2,7 +2,7 @@
 
 public class AuthorDto
 {
+    public int Id { get; set; }
     public string Name { get; set; } = null!;
-    public string Login { get; set; } = null!;
-    public string Password { get; set; } = null!;
+    public List<EventDto> Events { get; set; } = [];
 }

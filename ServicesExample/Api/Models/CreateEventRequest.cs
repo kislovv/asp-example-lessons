@@ -16,7 +16,7 @@ public abstract class CreateEventRequest
     /// <summary>
     /// Автор события
     /// </summary>
-    public required string Author { get; set; }
+    public required int AuthorId { get; set; }
     /// <summary>
     /// Время и дата старта события
     /// </summary>
@@ -29,4 +29,8 @@ public abstract class CreateEventRequest
     /// Количество доступных мест
     /// </summary>
     public required uint Quota { get; set; }
+    /// <summary>
+    /// Количество баллов за мероприятие
+    /// </summary>
+    public required uint Score { get; set; }
 }

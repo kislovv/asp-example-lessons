@@ -1,6 +1,7 @@
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using ServicesExample.Api.Endpoints;
+using ServicesExample.Api.Models;
 using ServicesExample.Configurations.Mapper;
 using ServicesExample.Configurations.Swagger;
 using ServicesExample.Domain.Abstractions;
@@ -71,7 +72,7 @@ if (app.Environment.IsDevelopment())
 }
 
 apiGroup.MapGroup("authors").WithTags("Authors").MapPost("/add", 
-    async (AppDbContext dbContext, AuthorDto authorDto) =>
+    async (AppDbContext dbContext, CreateAutorRequest authorDto) =>
 {
     await dbContext.Authors.AddAsync(new Author
     {

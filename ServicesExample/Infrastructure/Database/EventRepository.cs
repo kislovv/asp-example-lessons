@@ -58,7 +58,9 @@ public class EventRepository(AppDbContext appDbContext,IMapper mapper) : IEventR
     public async Task<ICollection<EventDto>> GetAllAsync()
     {
         return mapper.Map<ICollection<EventDto>>(
-            await appDbContext.Events.Include(ev => ev.Author)
+            await appDbContext.Events
+                .Include(ev => ev.Author)
+                .Include(ev => ev.Students)
             .ToListAsync());
     }
 
@@ -70,13 +72,7 @@ public class EventRepository(AppDbContext appDbContext,IMapper mapper) : IEventR
     public async Task<ICollection<EventDto>> GetByAuthor(int authorId)
     {
         return mapper.Map<ICollection<EventDto>>(await appDbContext.
-            Events.Where(ev => ev.AuthorId == authorId).ToListAsync());
+            Events.Include(ev => ev.Author)
+            .Where(ev => ev.AuthorId == authorId).ToListAsync());
     }
-
-    public async Task<EventDto> GetById(Guid id)
-    {
-        return mapper.Map<EventDto>(await appDbContext.Events.Include(ev => ev.Author)
-            .FirstOrDefaultAsync(ev => ev.Id == id));
-    }
-    
 }
