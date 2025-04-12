@@ -1,20 +1,25 @@
 using System.Reflection;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using ServicesExample.Abstractions;
 using ServicesExample.Configurations.Mapper;
 using ServicesExample.Configurations.Options;
 using ServicesExample.Configurations.Swagger;
+using ServicesExample.Database;
 using ServicesExample.Endpoints;
+using ServicesExample.Entities;
 using ServicesExample.Models;
 using ServicesExample.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddScoped<IEventService, EventService>();
-builder.Services.AddScoped<IEventRepository>(provider =>
+builder.Services.AddScoped<IEventRepository, EventRepository>();
+
+builder.Services.AddDbContext<AppDbContext>(optionsBuilder =>
 {
-    var mapper = provider.GetRequiredService<IMapper>();
-    return new EventRepository(builder.Configuration["EventsPath"]!, mapper);
+    optionsBuilder.UseSnakeCaseNamingConvention();
+    optionsBuilder.UseNpgsql(builder.Configuration["App:ConnectionString"]);
 });
 
 builder.Services.AddSwaggerGen(c =>
@@ -64,6 +69,22 @@ if (app.Environment.IsDevelopment())
     app.Map("/", (IConfiguration appConfig) =>
         $"{string.Join("\r\n",appConfig.AsEnumerable().Select(x=> $"{x.Key} : {x.Value} "))} ");
 }
+
+apiGroup.MapGroup("authors").WithTags("Authors").MapPost("/add", 
+    async (AppDbContext dbContext, AuthorDto authorDto) =>
+{
+    await dbContext.Authors.AddAsync(new Author
+    {
+        Name = authorDto.Name,
+        Login = authorDto.Login,
+        Password = authorDto.Password,
+        Role = "Author"
+    });
+    
+    await dbContext.SaveChangesAsync();
+    
+    return Results.Ok();
+});
 
 
 app.Run();

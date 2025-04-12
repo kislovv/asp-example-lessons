@@ -1,46 +1,53 @@
-﻿using System.Text.Json;
+﻿using System.Collections;
+using System.Text.Json;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using ServicesExample.Abstractions;
+using ServicesExample.Database;
 using ServicesExample.Entities;
 using ServicesExample.Models;
 
 namespace ServicesExample.Services;
 
-public class EventRepository(string path, IMapper mapper) : IEventRepository
+public class EventRepository(AppDbContext appDbContext,IMapper mapper) : IEventRepository
 {
-    private readonly List<Event> _events = 
-        JsonSerializer.Deserialize<List<Event>>(File.ReadAllText(path)) 
-        ?? [];
-    public Task<IEnumerable<EventDto>> GetAllAsync()
+    public Task<EventDto> AddAsync(EventDto entity)
     {
-        return Task.FromResult(mapper.Map<IEnumerable<EventDto>>(_events));
+        throw new NotImplementedException();
     }
 
-    public async Task<EventDto> AddAsync(EventDto ev)
+    public Task<EventDto> UpdateAsync(EventDto entity)
     {
-        ev.Id = Guid.NewGuid();
-        _events.Add(mapper.Map<Event>(ev));
-        await File.WriteAllTextAsync(path, JsonSerializer.Serialize(_events));
-        return ev;
+        throw new NotImplementedException();
     }
 
-    public async Task UpdateAsync(EventDto evtDto)
+    public Task DeleteAsync(EventDto entity)
     {
-        var evt = mapper.Map<Event>(evtDto);
-        var index = _events.FindIndex(x => x.Id == evt.Id);
-        if (index == -1)
-        {
-            return;
-        }
-        _events[index] = evt;
-        await File.WriteAllTextAsync(path, JsonSerializer.Serialize(_events));
+        throw new NotImplementedException();
     }
 
-    public Task<EventDto> GetAsync(Guid eventId)
+    public Task<EventDto?> GetByIdAsync(Guid id)
     {
-        return Task.FromResult(
-                   mapper.Map<EventDto>(
-                       _events.FirstOrDefault(x => x.Id == eventId)))
-               ?? throw new KeyNotFoundException();
+        throw new NotImplementedException();
     }
+
+    public async Task<ICollection<EventDto>> GetAllAsync()
+    {
+        return mapper.Map<ICollection<EventDto>>(
+            await appDbContext.Events.Include(ev => ev.Author)
+            .ToListAsync());
+    }
+
+    public async Task<ICollection<EventDto>> GetByAuthor(int authorId)
+    {
+        return mapper.Map<ICollection<EventDto>>(await appDbContext.
+            Events.Where(ev => ev.AuthorId == authorId).ToListAsync());
+    }
+
+    public async Task<EventDto> GetById(Guid id)
+    {
+        return mapper.Map<EventDto>(await appDbContext.Events.Include(ev => ev.Author)
+            .FirstOrDefaultAsync(ev => ev.Id == id));
+    }
+    
 }

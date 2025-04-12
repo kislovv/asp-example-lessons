@@ -25,8 +25,7 @@ public class ApiKeyOperationFilter : IOperationFilter
             Schema = new OpenApiSchema
             {
                 Type = "String"
-            },
-            Required = true
+            }
         });
     }
 }

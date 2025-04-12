@@ -26,7 +26,7 @@ public class EventServiceTests
             .With(dto => dto.Quota, 2u)
             .Create();
         
-        _eventRepositoryMock.Setup(repository => repository.GetAsync(eventDto.Id))
+        _eventRepositoryMock.Setup(repository => repository.GetByIdAsync(eventDto.Id))
             .ReturnsAsync(eventDto);
 
         var eventService = new EventService(_eventRepositoryMock.Object, _quotesServiceMock.Object);
@@ -47,7 +47,7 @@ public class EventServiceTests
             .With(dto => dto.Quota, 0u)
             .Create();
         
-        _eventRepositoryMock.Setup(repository => repository.GetAsync(eventDto.Id))
+        _eventRepositoryMock.Setup(repository => repository.GetByIdAsync(eventDto.Id))
             .ReturnsAsync(eventDto);
 
         var eventService = new EventService(_eventRepositoryMock.Object, _quotesServiceMock.Object);

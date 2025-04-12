@@ -24,7 +24,7 @@ public class EventService(IEventRepository eventRepository, IQuotesService quote
 
     public async Task<bool> RegistrationEventAsync(Guid eventId)
     {
-        var ev = await eventRepository.GetAsync(eventId);
+        var ev = await eventRepository.GetByIdAsync(eventId);
 
         if (ev.Quota < 1)
         {
