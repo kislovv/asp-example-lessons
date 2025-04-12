@@ -8,16 +8,10 @@ namespace ServiceExampleTests;
 
 public class EventServiceTests
 {
-    private Mock<IEventRepository> _eventRepositoryMock;
-    private Mock<IQuotesService> _quotesServiceMock;
-    private readonly Fixture _fixture;
-    public EventServiceTests()
-    {
-        _eventRepositoryMock = new Mock<IEventRepository>();
-        _quotesServiceMock = new Mock<IQuotesService>();
-        _fixture = new Fixture();
-    }
-    
+    private readonly Mock<IEventRepository> _eventRepositoryMock = new();
+    private readonly Mock<IQuotesService> _quotesServiceMock = new();
+    private readonly Fixture _fixture = new();
+
     [Fact]
     public async Task Event_Has_Free_Quota_Should_Be_Return_True()
     {
