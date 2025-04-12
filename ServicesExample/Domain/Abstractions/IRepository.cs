@@ -7,4 +7,5 @@ public interface IRepository<TKey,T>
     Task DeleteAsync(T entity);
     Task<T?> GetByIdAsync(TKey id);
     Task<ICollection<T>> GetAllAsync();
+    Task<int> SaveChangesAsync();
 }

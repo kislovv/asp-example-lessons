@@ -14,4 +14,6 @@ public class Event
     public Author? Author { get; set; }
 
     public List<Student> Students { get; set; } = [];
+    
+    public bool IsDeleted { get; set; }
 }

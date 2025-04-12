@@ -1,30 +1,58 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using ServicesExample.Domain.Abstractions;
+using ServicesExample.Domain.Entities;
 using ServicesExample.Domain.Models;
 
 namespace ServicesExample.Infrastructure.Database;
 
 public class EventRepository(AppDbContext appDbContext,IMapper mapper) : IEventRepository
 {
-    public Task<EventDto> AddAsync(EventDto entity)
+    public async Task<EventDto> AddAsync(EventDto entity)
     {
-        throw new NotImplementedException();
+        var result = await appDbContext.Events.AddAsync(
+            mapper.Map<Event>(entity));
+        
+        return mapper.Map<EventDto>(result.Entity);
     }
 
-    public Task<EventDto> UpdateAsync(EventDto entity)
+    public async Task<EventDto> UpdateAsync(EventDto dto)
     {
-        throw new NotImplementedException();
+        var existingEntity = await appDbContext.Events
+            .Include(e => e.Students)
+            .Include(e => e.Author)
+            .FirstOrDefaultAsync(e => e.Id == dto.Id);
+
+        if (existingEntity is null)
+            throw new Exception("Сущность не найдена");
+        
+        mapper.Map(dto, existingEntity);
+
+        return dto;
     }
 
-    public Task DeleteAsync(EventDto entity)
+    public async Task DeleteAsync(EventDto entity)
     {
-        throw new NotImplementedException();
+        var existingEntity = await appDbContext.Events
+            .Include(e => e.Students)
+            .Include(e => e.Author)
+            .FirstOrDefaultAsync(e => e.Id == entity.Id);
+
+        if (existingEntity is null)
+            throw new Exception("Сущность не найдена");
+        
+        existingEntity.IsDeleted = true;
+        
     }
 
-    public Task<EventDto?> GetByIdAsync(Guid id)
+    public async Task<EventDto?> GetByIdAsync(Guid id)
     {
-        throw new NotImplementedException();
+        var entity = await appDbContext.Events
+            .Include(e => e.Author)
+            .Include(e => e.Students)
+            .FirstOrDefaultAsync(e => e.Id == id);
+
+        return mapper.Map<EventDto?>(entity);
     }
 
     public async Task<ICollection<EventDto>> GetAllAsync()
@@ -32,6 +60,11 @@ public class EventRepository(AppDbContext appDbContext,IMapper mapper) : IEventR
         return mapper.Map<ICollection<EventDto>>(
             await appDbContext.Events.Include(ev => ev.Author)
             .ToListAsync());
+    }
+
+    public async Task<int> SaveChangesAsync()
+    {
+        return await appDbContext.SaveChangesAsync();
     }
 
     public async Task<ICollection<EventDto>> GetByAuthor(int authorId)
