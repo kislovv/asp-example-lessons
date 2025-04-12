@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using ServicesExample.Abstractions;
+using ServicesExample.Domain.Abstractions;
 using ServicesExample.Domain.Models;
 
 namespace ServicesExample.Infrastructure.Database;

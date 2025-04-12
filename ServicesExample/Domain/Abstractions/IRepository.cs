@@ -1,4 +1,4 @@
-﻿namespace ServicesExample.Abstractions;
+﻿namespace ServicesExample.Domain.Abstractions;
 
 public interface IRepository<TKey,T>
 {

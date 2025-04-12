@@ -1,14 +1,13 @@
 ﻿using System.Text.Json;
 using Microsoft.Extensions.Options;
-using ServicesExample.Abstractions;
-using ServicesExample.Api.Configurations.Options;
-using ServicesExample.Api.Models;
+using ServicesExample.Domain.Abstractions;
+using ServicesExample.Infrastructure.QuotesSystem.Options;
 
-namespace ServicesExample.Domain.Services;
+namespace ServicesExample.Infrastructure.QuotesSystem;
 
 public class QuotesService(HttpClient client, IOptionsMonitor<QuotesOptions> quotesOptions) : IQuotesService
 {
-    public async Task<QuotesApiResponse> GetRandomQuotesAsync()
+    public async Task<string> GetRandomSloganAsync()
     {
         var options  = quotesOptions.CurrentValue;
         var result = await client.GetFromJsonAsync<QuotesApiResponse>(
@@ -23,6 +22,6 @@ public class QuotesService(HttpClient client, IOptionsMonitor<QuotesOptions> quo
             throw new ApplicationException("No quotes available");
         }
 
-        return result;
+        return result.Content ?? string.Empty;
     }
 }

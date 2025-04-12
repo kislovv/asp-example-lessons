@@ -18,8 +18,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         
         modelBuilder.Entity<Student>()
             .Property(s => s.Name)
-            .HasMaxLength(50)
-            .HasMinLength(3);
+            .HasMinLength(3)
+            .HasMaxLength(50);
         
         base.OnModelCreating(modelBuilder);
     }

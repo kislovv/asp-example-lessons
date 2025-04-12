@@ -1,15 +1,15 @@
 using System.Reflection;
-using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using ServicesExample.Abstractions;
-using ServicesExample.Api.Configurations.Mapper;
-using ServicesExample.Api.Configurations.Options;
-using ServicesExample.Api.Configurations.Swagger;
 using ServicesExample.Api.Endpoints;
+using ServicesExample.Configurations.Mapper;
+using ServicesExample.Configurations.Swagger;
+using ServicesExample.Domain.Abstractions;
 using ServicesExample.Domain.Entities;
 using ServicesExample.Domain.Models;
-using ServicesExample.Domain.Services;
 using ServicesExample.Infrastructure.Database;
+using ServicesExample.Infrastructure.QuotesSystem;
+using ServicesExample.Infrastructure.QuotesSystem.Options;
+using ServicesExample.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

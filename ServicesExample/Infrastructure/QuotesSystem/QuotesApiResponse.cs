@@ -1,4 +1,4 @@
-﻿namespace ServicesExample.Api.Models;
+﻿namespace ServicesExample.Infrastructure.QuotesSystem;
 
 public class QuotesApiResponse
 {

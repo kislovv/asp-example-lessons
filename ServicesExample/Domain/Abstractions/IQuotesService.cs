@@ -1,8 +1,7 @@
-﻿using ServicesExample.Api.Models;
-
-namespace ServicesExample.Abstractions;
+﻿
+namespace ServicesExample.Domain.Abstractions;
 
 public interface IQuotesService
 {
-    Task<QuotesApiResponse> GetRandomQuotesAsync();
+    Task<string> GetRandomSloganAsync();
 }

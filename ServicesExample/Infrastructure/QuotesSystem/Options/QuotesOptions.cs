@@ -1,4 +1,4 @@
-﻿namespace ServicesExample.Api.Configurations.Options;
+﻿namespace ServicesExample.Infrastructure.QuotesSystem.Options;
 
 public class QuotesOptions
 {

@@ -1,7 +1,7 @@
-﻿using ServicesExample.Abstractions;
+﻿using ServicesExample.Domain.Abstractions;
 using ServicesExample.Domain.Models;
 
-namespace ServicesExample.Domain.Services;
+namespace ServicesExample.Services;
 
 public class EventService(IEventRepository eventRepository, IQuotesService quotesService) : IEventService
 {
@@ -14,8 +14,8 @@ public class EventService(IEventRepository eventRepository, IQuotesService quote
 
     public async Task<EventDto> CreateEventAsync(EventDto dto)
     {
-        var quotaResult = await quotesService.GetRandomQuotesAsync();
-        dto.Slogan = quotaResult.Content;
+        var quotaResult = await quotesService.GetRandomSloganAsync();
+        dto.Slogan = quotaResult;
         
         var result = await eventRepository.AddAsync(dto);
         

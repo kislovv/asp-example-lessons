@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using ServicesExample.Domain.Models;
+﻿using ServicesExample.Domain.Models;
 
-namespace ServicesExample.Abstractions;
+namespace ServicesExample.Domain.Abstractions;
 
 public interface IEventRepository : IRepository<Guid, EventDto>
 {

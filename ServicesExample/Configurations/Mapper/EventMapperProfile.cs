@@ -3,7 +3,7 @@ using ServicesExample.Api.Models;
 using ServicesExample.Domain.Entities;
 using ServicesExample.Domain.Models;
 
-namespace ServicesExample.Api.Configurations.Mapper;
+namespace ServicesExample.Configurations.Mapper;
 
 public class EventMapperProfile : Profile
 {

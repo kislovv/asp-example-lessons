@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using ServicesExample.Abstractions;
 using ServicesExample.Api.Models;
+using ServicesExample.Domain.Abstractions;
 using ServicesExample.Domain.Models;
 
 namespace ServicesExample.Api.Endpoints;

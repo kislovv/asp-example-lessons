@@ -1,7 +1,7 @@
 ﻿using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace ServicesExample.Api.Configurations.Swagger;
+namespace ServicesExample.Configurations.Swagger;
 
 public class ApiKeyOperationFilter : IOperationFilter
 {
