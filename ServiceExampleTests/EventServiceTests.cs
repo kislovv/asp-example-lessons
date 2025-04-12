@@ -2,7 +2,7 @@ using AutoFixture;
 using Moq;
 using ServicesExample.Domain.Abstractions;
 using ServicesExample.Domain.Models;
-using ServicesExample.Services;
+using ServicesExample.Domain.Services;
 
 namespace ServiceExampleTests;
 

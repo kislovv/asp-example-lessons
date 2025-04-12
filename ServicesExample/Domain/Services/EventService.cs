@@ -1,7 +1,7 @@
 ﻿using ServicesExample.Domain.Abstractions;
 using ServicesExample.Domain.Models;
 
-namespace ServicesExample.Services;
+namespace ServicesExample.Domain.Services;
 
 public class EventService(IEventRepository eventRepository, IQuotesService quotesService) : IEventService
 {
