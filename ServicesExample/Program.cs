@@ -1,4 +1,5 @@
 using System.Reflection;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using ServicesExample.Api.Endpoints;
 using ServicesExample.Api.Models;
@@ -6,7 +7,6 @@ using ServicesExample.Configurations.Mapper;
 using ServicesExample.Configurations.Swagger;
 using ServicesExample.Domain.Abstractions;
 using ServicesExample.Domain.Entities;
-using ServicesExample.Domain.Models;
 using ServicesExample.Domain.Services;
 using ServicesExample.Infrastructure.Database;
 using ServicesExample.Infrastructure.QuotesSystem;
@@ -35,6 +35,7 @@ builder.Services.AddSwaggerGen(c =>
     
 });
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
 
 builder.Services.AddHttpClient<IQuotesService, QuotesService>(client =>

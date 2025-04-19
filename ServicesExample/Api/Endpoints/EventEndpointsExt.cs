@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ServicesExample.Api.Filters;
 using ServicesExample.Api.Models;
 using ServicesExample.Domain.Abstractions;
 using ServicesExample.Domain.Models;
@@ -25,7 +26,9 @@ public static class EventEndpointsExt
             var dto = mapper.Map<EventDto>(createEventReq);
             var result = await service.CreateEventAsync(dto);
             return Results.Ok(result);
-        }).Produces<EventDto>();
+        })
+        .AddEndpointFilter<ValidationFilter<CreateEventRequest>>()
+            .Produces<EventDto>();
         
         return eventGroup;
     }
