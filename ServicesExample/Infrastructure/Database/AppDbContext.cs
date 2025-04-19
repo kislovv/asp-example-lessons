@@ -12,7 +12,9 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<User>().UseTpcMappingStrategy();
+        modelBuilder.Entity<User>()
+            .UseTpcMappingStrategy()
+            .HasIndex(user => user.Login);
         
         modelBuilder.ApplyConfiguration(new EventEntityConfiguration());
         
