@@ -3,14 +3,13 @@ using System.Reflection;
 using System.Security.Claims;
 using System.Text;
 using FluentValidation;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using ServicesExample.Api.Endpoints;
 using ServicesExample.Api.Models;
+using ServicesExample.Configurations.Logging;
 using ServicesExample.Configurations.Mapper;
 using ServicesExample.Configurations.Swagger;
 using ServicesExample.Domain.Abstractions;
@@ -24,6 +23,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddScoped<IEventService, EventService>();
 builder.Services.AddScoped<IEventRepository, EventRepository>();
+builder.Services.AddTransient(typeof(ILogger<>), typeof(SecureLogger<>));
+builder.Logging.AddSeq();
+builder.Services.AddHttpLogging(options =>
+{
+    options.ResponseBodyLogLimit = 4096;
+} );
 
 builder.Services.AddDbContext<AppDbContext>(optionsBuilder =>
 {
@@ -58,7 +63,6 @@ builder.Services.AddSwaggerGen(c =>
     c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
     
     c.OperationFilter<ApiKeyOperationFilter>();
-    
     
     c.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
     {
@@ -110,15 +114,15 @@ builder.Services.AddAutoMapper(expression =>
 
 var app = builder.Build();
 
-
 app.UseAuthentication();
 app.UseAuthorization();
 
-
 var apiGroup = app.MapGroup("api");
 
-apiGroup.MapGroup("user").WithTags("Users").MapPost("auth", async (UserLoginModel userLoginModel, AppDbContext db, HttpContext context) =>
+apiGroup.MapGroup("user").WithTags("Users").MapPost("auth", async (UserLoginModel userLoginModel,
+    AppDbContext db, HttpContext context, ILogger<Program> logger) =>
 {
+    logger.LogInformation("Started logging with user {login}", userLoginModel.Login);
     var user = await db.Users.FirstOrDefaultAsync(u => u.Login == userLoginModel.Login &&
                                                        u.Password == userLoginModel.Password);
     if (user == null)
@@ -141,8 +145,12 @@ apiGroup.MapGroup("user").WithTags("Users").MapPost("auth", async (UserLoginMode
         signingCredentials: new SigningCredentials(new SymmetricSecurityKey(
             Encoding.UTF8.GetBytes(builder.Configuration["AuthConfig:IssuerSignKey"]!)),
             SecurityAlgorithms.HmacSha256));
-    
-    return Results.Ok(new JwtSecurityTokenHandler().WriteToken(jwt));
+    var jwtToken = new JwtSecurityTokenHandler().WriteToken(jwt);
+    logger.LogInformation("response {token}", jwtToken);
+    return Results.Ok(new
+    {
+        token = jwtToken
+    });
 });
 
 apiGroup.MapEvents();
@@ -173,8 +181,6 @@ apiGroup.MapGroup("authors").WithTags("Authors").MapPost("/add",
     return Results.Ok();
 });
 
-
-
-
+app.UseHttpLogging();
 
 app.Run();

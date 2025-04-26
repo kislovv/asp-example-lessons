@@ -6,4 +6,10 @@
         <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Aspire.Hosting.Seq" Version="9.2.1" />
+      <PackageReference Include="Seq.Api" Version="2024.3.0" />
+      <PackageReference Include="Seq.Extensions.Logging" Version="8.0.0" />
+    </ItemGroup>
+
 </Project>
