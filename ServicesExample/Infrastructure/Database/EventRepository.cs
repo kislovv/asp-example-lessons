@@ -75,4 +75,13 @@ public class EventRepository(AppDbContext appDbContext,IMapper mapper) : IEventR
             Events.Include(ev => ev.Author)
             .Where(ev => ev.AuthorId == authorId).ToListAsync());
     }
+    public async Task<ICollection<EventDto>> GetAllWhenEndedLastDay()
+    {
+        return mapper.Map<ICollection<EventDto>>(await appDbContext.Events
+            .Include(ev => ev.Author)
+            .Include(ev => ev.Students)
+            .Where(ev => ev.DateTimeOfEnd < DateTime.Today && 
+                         ev.DateTimeOfEnd > DateTime.Today.AddDays(-2))
+            .ToListAsync());
+    }
 }

@@ -3,6 +3,8 @@ using System.Reflection;
 using System.Security.Claims;
 using System.Text;
 using FluentValidation;
+using Hangfire;
+using Hangfire.PostgreSql;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -23,8 +25,18 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddScoped<IEventService, EventService>();
 builder.Services.AddScoped<IEventRepository, EventRepository>();
+builder.Services.AddScoped<ScoreEndedEventsByLastDayJob>();
 builder.Services.AddTransient(typeof(ILogger<>), typeof(SecureLogger<>));
 builder.Logging.AddSeq();
+builder.Services.AddHangfire(configuration =>
+{
+    configuration.UsePostgreSqlStorage(options =>
+    {
+        options.UseNpgsqlConnection(builder.Configuration["App:ConnectionString"]);
+    });
+});
+builder.Services.AddHangfireServer();
+
 builder.Services.AddHttpLogging(options =>
 {
     options.ResponseBodyLogLimit = 4096;
@@ -116,6 +128,8 @@ var app = builder.Build();
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseHangfireDashboard();
+
 
 var apiGroup = app.MapGroup("api");
 
@@ -180,6 +194,11 @@ apiGroup.MapGroup("authors").WithTags("Authors").MapPost("/add",
     
     return Results.Ok();
 });
+
+RecurringJob.AddOrUpdate("update-student", 
+    (ScoreEndedEventsByLastDayJob scoreEndedEventsByLastDayJob) =>
+        scoreEndedEventsByLastDayJob.UpdateScoreAllStudentsByLastDay(),
+    Cron.Daily(0,0));
 
 app.UseHttpLogging();
 

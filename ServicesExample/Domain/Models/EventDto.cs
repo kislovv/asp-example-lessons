@@ -10,6 +10,7 @@ public class EventDto
     public DateTime DateTimeOfStart { get; set; }
     public DateTime DateTimeOfEnd { get; set; }
     public uint Quota { get; set; }
+    public uint Score { get; set; }
     public List<StudentDto> Students { get; set; } = [];
     
     public string? Slogan { get; set; }
