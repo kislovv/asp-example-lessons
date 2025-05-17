@@ -1,8 +1,7 @@
 ﻿namespace ServicesExample.Domain.Models;
 
-public class StudentDto
+public class StudentDto : UserDto
 {
-    public long? Id { get; set; }
     public required string Name { get; set; }
     public uint Course { get; set; }
     public uint Score { get; set; } = 0;

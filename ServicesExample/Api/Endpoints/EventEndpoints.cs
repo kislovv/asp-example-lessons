@@ -6,11 +6,10 @@ using ServicesExample.Domain.Models;
 
 namespace ServicesExample.Api.Endpoints;
 
-public static class EventEndpointsExt
+public static class EventEndpoints
 {
     public static IEndpointRouteBuilder MapEvents(this IEndpointRouteBuilder endpoints)
     {
-        
         var eventGroup = endpoints.MapGroup("/events").WithTags("Events");
         
         eventGroup.MapGet("/get-all-events", async (IEventService service) =>

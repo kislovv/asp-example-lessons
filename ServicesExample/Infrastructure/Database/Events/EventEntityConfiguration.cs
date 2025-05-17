@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ServicesExample.Domain.Entities;
 
-namespace ServicesExample.Infrastructure.Database;
+namespace ServicesExample.Infrastructure.Database.Events;
 
 public class EventEntityConfiguration : IEntityTypeConfiguration<Event>
 {

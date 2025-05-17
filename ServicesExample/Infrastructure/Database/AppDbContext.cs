@@ -1,5 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ServicesExample.Domain.Entities;
+using ServicesExample.Infrastructure.Database.Events;
+using ServicesExample.Infrastructure.Database.Students;
+using ServicesExample.Infrastructure.Database.Users;
 
 namespace ServicesExample.Infrastructure.Database;
 
@@ -12,16 +15,9 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<User>()
-            .UseTpcMappingStrategy()
-            .HasIndex(user => user.Login);
-        
+        modelBuilder.ApplyConfiguration(new UserEntityConfiguration());
         modelBuilder.ApplyConfiguration(new EventEntityConfiguration());
-        
-        modelBuilder.Entity<Student>()
-            .Property(s => s.Name)
-            .HasMinLength(3)
-            .HasMaxLength(50);
+        modelBuilder.ApplyConfiguration(new StudentEntityConfiguration());
         
         base.OnModelCreating(modelBuilder);
     }

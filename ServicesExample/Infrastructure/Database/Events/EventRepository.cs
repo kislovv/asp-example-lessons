@@ -4,7 +4,7 @@ using ServicesExample.Domain.Abstractions;
 using ServicesExample.Domain.Entities;
 using ServicesExample.Domain.Models;
 
-namespace ServicesExample.Infrastructure.Database;
+namespace ServicesExample.Infrastructure.Database.Events;
 
 public class EventRepository(AppDbContext appDbContext,IMapper mapper) : IEventRepository
 {
@@ -77,11 +77,13 @@ public class EventRepository(AppDbContext appDbContext,IMapper mapper) : IEventR
     }
     public async Task<ICollection<EventDto>> GetAllWhenEndedLastDay()
     {
+        var todayUtc = DateTime.UtcNow.Date;
+        
         return mapper.Map<ICollection<EventDto>>(await appDbContext.Events
             .Include(ev => ev.Author)
             .Include(ev => ev.Students)
-            .Where(ev => ev.DateTimeOfEnd < DateTime.Today && 
-                         ev.DateTimeOfEnd > DateTime.Today.AddDays(-2))
+            .Where(ev => ev.DateTimeOfEnd < todayUtc && 
+                         ev.DateTimeOfEnd > todayUtc.AddDays(-1))
             .ToListAsync());
     }
 }
