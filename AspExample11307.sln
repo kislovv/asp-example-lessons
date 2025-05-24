@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServicesExample", "Services
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceExampleTests", "ServiceExampleTests\ServiceExampleTests.csproj", "{24554A65-6A83-43F3-B728-79738FAF7BD6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CQRSExample", "CQRSExample\CQRSExample.csproj", "{DD4C2057-8F35-4715-8D42-A454D09AE485}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{24554A65-6A83-43F3-B728-79738FAF7BD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{24554A65-6A83-43F3-B728-79738FAF7BD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{24554A65-6A83-43F3-B728-79738FAF7BD6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD4C2057-8F35-4715-8D42-A454D09AE485}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD4C2057-8F35-4715-8D42-A454D09AE485}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD4C2057-8F35-4715-8D42-A454D09AE485}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD4C2057-8F35-4715-8D42-A454D09AE485}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
