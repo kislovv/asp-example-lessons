@@ -10,7 +10,7 @@ using ServicesExample.Domain.Models;
 
 namespace ServicesExample.Api.Pipeline;
 
-public class JwtWorker(IOptionsMonitor<JwtOptions> options)
+public class JwtWorker(IOptionsMonitor<JwtOptions> options): IJwtTokenGenerator
 {
     public string? CreateJwtToken(UserDto userDto)
     {

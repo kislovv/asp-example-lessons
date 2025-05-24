@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ServicesExample.Domain.Abstractions;
 using ServicesExample.Infrastructure.Database;
+using ServicesExample.Infrastructure.Database.Authors;
 using ServicesExample.Infrastructure.Database.Events;
+using ServicesExample.Infrastructure.Database.Students;
 using ServicesExample.Infrastructure.QuotesSystem;
 using ServicesExample.Infrastructure.QuotesSystem.Options;
 
@@ -13,6 +15,8 @@ public static class ServiceCollectionExt
     {
         
         services.AddScoped<IEventRepository, EventRepository>();
+        services.AddScoped<IStudentRepository, StudentRepository>();
+        services.AddScoped<IAuthorRepository, AuthorRepository>();
         
         return services.AddDbContext<AppDbContext>(optionsBuilder =>
         {
@@ -34,6 +38,4 @@ public static class ServiceCollectionExt
 
         return services.Configure<QuotesOptions>(configuration.GetSection("QuotesOptions"));
     }
-
-    
 }

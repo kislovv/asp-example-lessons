@@ -9,7 +9,6 @@ public static class ModelBuilderExt
         int minLength)
     {
         builder.Metadata.AddAnnotation("MinimumLength", minLength);
-
         return builder;
     }
 }

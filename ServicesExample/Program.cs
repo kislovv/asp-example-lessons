@@ -1,48 +1,26 @@
-using System.Text;
 using FluentValidation;
 using Hangfire;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using ServicesExample.Api;
 using ServicesExample.Api.Endpoints;
-using ServicesExample.Api.Pipeline;
 using ServicesExample.Configurations.Mapper;
-using ServicesExample.Configurations.Options;
 using ServicesExample.Domain.Abstractions;
+using ServicesExample.Domain.Entities;
 using ServicesExample.Domain.Services;
 using ServicesExample.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddScoped<IEventService, EventService>();
+builder.Services.AddKeyedScoped<IUserRegistrationService, 
+    StudentRegistrationService>(nameof(UserRole.Student));
+
 builder.Services.AddScoped<ScoreEndedEventsByLastDayJob>();
 
 builder.Services.AddHangfire(builder.Configuration["App:ConnectionString"]!);
-
 builder.Services.AddLogging(builder.Logging);
-
 builder.Services.AddDatabase(builder.Configuration["App:ConnectionString"]!);
+builder.Services.AddAuthorization(builder.Configuration);
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.Audience = builder.Configuration["AuthConfig:Audience"];
-        options.ClaimsIssuer = builder.Configuration["AuthConfig:Issuer"];
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidIssuer = builder.Configuration["AuthConfig:Issuer"],
-            ValidAudience = builder.Configuration["AuthConfig:Audience"],
-            RequireExpirationTime = true,
-            RequireAudience = true,
-            IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(builder.Configuration["AuthConfig:IssuerSignKey"]!)),
-            
-        };
-    });
-builder.Services.AddScoped<JwtWorker>();
-
-builder.Services.AddAuthorization();
-builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("AuthConfig"));
 builder.Services.AddSwagger(builder.Environment.ApplicationName);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();

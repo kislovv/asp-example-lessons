@@ -7,6 +7,7 @@ public static class StudentEndpoints
         var studentGroup = endpoints.MapGroup("/students").WithTags("Students");
         
         
+        
         return endpoints;
     }
 }
