@@ -6,9 +6,8 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.AddHttpClient("quotes",client =>
 {
-    client.BaseAddress = new Uri("https://quotes15.p.rapidapi.com");
-    client.DefaultRequestHeaders.Add("x-rapidapi-host", "quotes15.p.rapidapi.com");
-    client.DefaultRequestHeaders.Add("x-rapidapi-key", "11c5aa0932msh6f977a8bfc17035p154120jsn86e885da8be0");
+    client.BaseAddress = new Uri("https://api.api-ninjas.com");
+    client.DefaultRequestHeaders.Add("X-API-Key", "zV3MLERI3/LIKlGWPXoeKQ==w55oaGmxBTqPJ24n");
 });
 
 var app = builder.Build();

@@ -11,7 +11,7 @@
     private async Task GetQuote()
     {
         using var client = HttpClientFactory.CreateClient("quotes");
-        var result = await client.GetFromJsonAsync<QuotesApiResponse>("/quotes/random/?language_code=ru", 
+        var result = await client.GetFromJsonAsync<List<QuotesApiResponse>>("/v1/quotes", 
             new JsonSerializerOptions
             {
                 PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower
@@ -21,7 +21,7 @@
             throw new ApplicationException("No quotes available");
         }
 
-        _quote = $"{result.Content} (c.) {result.Originator.Name} ";
+        _quote = $"{result[0].Quote} (c.) {result[0].Author} ";
     }
 
     [Inject] private IHttpClientFactory HttpClientFactory { get; set; } = default!;
